@@ -1,0 +1,72 @@
+<Schema name="catshoes">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Cabang">
+    <Hierarchy visible="true" hasAll="true" primaryKey="idCabang">
+      <Table name="dim_cabang">
+      </Table>
+      <Level name="namaCabang" visible="true" column="namaCabang" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="namaKota" visible="true" column="namaKota" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="namaProvinsi" visible="true" column="namaProvinsi" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Karyawan">
+    <Hierarchy visible="true" hasAll="true" primaryKey="idKaryawan">
+      <Table name="dim_karyawann">
+      </Table>
+      <Level name="namaKaryawan" visible="true" column="namaKaryawan" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="jenisKelamin" visible="true" column="jenisKelamin" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Pemasok">
+    <Hierarchy visible="true" hasAll="true" primaryKey="idPemasok">
+      <Table name="dim_pemasok_catshoes">
+      </Table>
+      <Level name="namaPemasok" visible="true" column="namaPemasok" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Produk">
+    <Hierarchy visible="true" hasAll="true" primaryKey="idProduk">
+      <Table name="dim_produk_catshoes">
+      </Table>
+      <Level name="namaProduk" visible="true" column="namaProduk" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="namaJenis" visible="true" column="namaJenis" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="warna" visible="true" column="warna" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="ukuran" visible="true" column="ukuran" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="gender" visible="true" column="gender" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="material" visible="true" column="material" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="harga" visible="true" column="harga" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="Penjualan" visible="true" cache="true" enabled="true">
+    <Table name="fact_penjualan_cs">
+    </Table>
+    <DimensionUsage source="Cabang" usagePrefix="Cabang" name="Cabang" visible="true" foreignKey="idCabang" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Karyawan" usagePrefix="Karyawan" name="Karyawan" visible="true" foreignKey="idKaryawan" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Pemasok" usagePrefix="Pemasok" name="Pemasok" visible="true" foreignKey="idPemasok" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Produk" usagePrefix="Produk" name="Produk" visible="true" foreignKey="idProduk" highCardinality="false">
+    </DimensionUsage>
+    <Measure name="jumlahPenjualan" column="jumlahPenjualan" formatString="#.###" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="harga" column="harga" formatString="##.###.###" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="totalPenjualan" column="totalPenjualan" formatString="##.###.###" aggregator="sum" visible="true">
+    </Measure>
+    <CalculatedMember name="totalPenjualan" formula="[Measures].[jumlahPenjualan]*[Measures].[harga]" dimension="Measures" visible="true">
+    </CalculatedMember>
+  </Cube>
+</Schema>
